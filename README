@@ -1,0 +1,54 @@
+mwlpdel is a collection of two scripts written in bash and perl that make
+it easy to delete a list of spam pages on a MediaWiki install.
+
+./lonelypages.sh will get a list of (upto) 900 lonelypages (aka Orphaned
+pages) from a MediaWiki install and then prompt you to verify that you want
+to delete each one. If you type Yes/1 it will append the page to a file
+(lonelypages_delete.)
+
+The file (lonelypages_delete) can be read by a perl script (lonelypages.pl)
+that uses MediaWiki::API to login to your MediaWiki install and delete the
+selected pages.
+
+Why did you write this crap?
+
+Good question. I didn't have access to the box with the MediaWiki install
+so deleting pages via SQL or a maintenance script was out of the question.
+I also was not a member of the Bureaucrats group so I couldn't use
+Special:DeleteBatch. Luckily, I was a member of the Administrator group,
+which allowed me to delete pages one by one. This was taking too long so I
+wrote these two scripts.
+
+Todo?
+
+* Write something to handle the configuration. Right now, users have to edit
+the script manually. :)
+
+In lonelypages.pl:
+
+edit lgname to match your username and lgpassword to match your password
+
+    18  $mw->login( { lgname => 'username', lgpassword => 'password' } );
+
+edit wiki.example.org to match your wiki's domain name
+
+    17  $mw->{config}->{api_url} = 'http://wiki.example.org/w/api.php';
+
+In lonelypages.sh:
+
+edit wiki.example.com to match your wiki's domain name
+
+    11 wget --quiet -O - "http://wiki.example.com...
+
+* I would like to make this a CGI script as I can envision a page with
+pre-checked textboxes presented to the user. Unfortunately, for the MediaWiki
+install I'm working with, most (611/613) lonelypages were spam pages. Going
+through each title manually with this script is STILL a PITA.
+
+* Get rid of the bash script. (Eh, maybe)
+
+LICENSE
+
+These scripts are not impressive. Please don't use them. If you still want
+modify/distribute these files feel free to do so under the conditions of
+the LICENSE file.
